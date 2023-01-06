@@ -28,7 +28,7 @@ int setinfo(FILE *fd, char *filepath)
     circle_t *c_first = NULL;
     plane_t *p_first = NULL;
     char* buff = NULL;
-    if (fd == -1){
+    if (fd == NULL){
         write(2, "file: '", 6);
         write(2, filepath, my_strlen(filepath));
         write(2, "' not found\n", 12);
@@ -61,6 +61,7 @@ isable hitboxes and areas.\n  'S' key        enable/disable sprites.", 348);
     }
     FILE *fd = fopen(av[1], "r");
     int errval = setinfo(fd, av[1]);
-    fclose(fd);
+    if (fd != NULL)
+        fclose(fd);
     return(errval);
 }
