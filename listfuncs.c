@@ -14,23 +14,23 @@
 
 static void set_dir2(win_t *win, plane_t *p, sprite_t *blimp)
 {
-    if (p->speed.x < -0.4){
-        if (p->speed.y > 0.4){
+    if (p->speed.x / p->i_speed < -0.5){
+        if (p->speed.y / p->i_speed > 0.5){
             set_anim_to(win, blimp, 3);
             return;
         }
-        if (p->speed.y < -0.4){
+        if (p->speed.y / p->i_speed < -0.5){
             set_anim_to(win, blimp, 5);
             return;
         }
         set_anim_to(win, blimp, 1);
         return;
     }
-    if (p->speed.y > 0.4){
+    if (p->speed.y / p->i_speed > 0.5){
         set_anim_to(win, blimp, 0);
         return;
     }
-    if (p->speed.y < -0.4){
+    if (p->speed.y / p->i_speed < -0.5){
         set_anim_to(win, blimp, 7);
         return;
     }
@@ -38,12 +38,12 @@ static void set_dir2(win_t *win, plane_t *p, sprite_t *blimp)
 
 static void set_dir(win_t *win, plane_t *p, sprite_t *blimp)
 {
-    if (p->speed.x > 0.4){
-        if (p->speed.y > 0.4){
+    if (p->speed.x / p->i_speed > 0.5){
+        if (p->speed.y / p->i_speed > 0.5){
             set_anim_to(win, blimp, 4);
             return;
         }
-        if (p->speed.y < -0.4){
+        if (p->speed.y / p->i_speed < -0.5){
             set_anim_to(win, blimp, 6);
             return;
         }

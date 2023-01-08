@@ -22,6 +22,7 @@
         sfVector2f pos;
         sfVector2f dest;
         sfVector2f speed;
+        int i_speed;
         int delay;
         int sector;
         unsigned char is_tower;

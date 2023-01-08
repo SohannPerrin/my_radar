@@ -22,16 +22,16 @@ sfVector2f makespeed(int speed, plane_t *plane)
     return (v_speed);
 }
 
-plane_t *makeplane(char* data, plane_t *first)
+plane_t *makeplane(char* data, plane_t *first, int pos)
 {
-    int pos = 2;
     plane_t* current = first;
     plane_t* new_elem = malloc(sizeof(plane_t));
     new_elem->pos.x = makedims(data, &pos);
     new_elem->pos.y = makedims(data, &pos);
     new_elem->dest.x = makedims(data, &pos);
     new_elem->dest.y = makedims(data, &pos);
-    new_elem->speed = makespeed(makedims(data, &pos), new_elem);
+    new_elem->i_speed = makedims(data, &pos);
+    new_elem->speed = makespeed(new_elem->i_speed, new_elem);
     new_elem->delay = makedims(data, &pos);
     new_elem->sector = -1;
     new_elem->next = new_elem->prev = NULL;
@@ -48,6 +48,7 @@ plane_t *makeplane(char* data, plane_t *first)
 
 int setplane(char* data, plane_t **first)
 {
+    int pos = 2;
     int i = 1, elems = 0;
     for (i = 1; data[i] != '\0'; i ++){
         if (data[i] != 32 && data[i] != 9 && data[i] != 10 &&
@@ -60,7 +61,7 @@ int setplane(char* data, plane_t **first)
         write(2, "invalid instruction file\n", 25);
         return (84);
     }
-    *first = makeplane(data, *first);
+    *first = makeplane(data, *first, pos);
     return (0);
 }
 
