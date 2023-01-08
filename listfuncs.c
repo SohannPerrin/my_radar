@@ -12,6 +12,47 @@
 #include "include/circlestruct.h"
 #include "include/windowsfuncs.h"
 
+static void set_dir2(win_t *win, plane_t *p, sprite_t *blimp)
+{
+    if (p->speed.x < -0.4){
+        if (p->speed.y > 0.4){
+            set_anim_to(win, blimp, 3);
+            return;
+        }
+        if (p->speed.y < -0.4){
+            set_anim_to(win, blimp, 5);
+            return;
+        }
+        set_anim_to(win, blimp, 1);
+        return;
+    }
+    if (p->speed.y > 0.4){
+        set_anim_to(win, blimp, 0);
+        return;
+    }
+    if (p->speed.y < -0.4){
+        set_anim_to(win, blimp, 7);
+        return;
+    }
+}
+
+static void set_dir(win_t *win, plane_t *p, sprite_t *blimp)
+{
+    if (p->speed.x > 0.4){
+        if (p->speed.y > 0.4){
+            set_anim_to(win, blimp, 4);
+            return;
+        }
+        if (p->speed.y < -0.4){
+            set_anim_to(win, blimp, 6);
+            return;
+        }
+        set_anim_to(win, blimp, 2);
+        return;
+    }
+    set_dir2(win, p, blimp);
+}
+
 static void does_plane_draw(win_t *win, plane_t *elem, sprite_t *blimp)
 {
     if (elem->delay <= win->time_passed / 25) {
@@ -30,9 +71,10 @@ void drawplanes(win_t *win, zone_t *zones, sprite_t *blimp)
     for (i = 0; i <= zones[0].size; i ++) {
         plane_t *elem = zones[i].first;
         while (elem != NULL) {
+            set_dir(win, elem, blimp);
             sfSprite_setPosition(blimp->sprite, elem->pos);
-            setspritescale(blimp,
-            0.01 * (elem->pos.y / 50), 0.01 * (elem->pos.y / 50));
+            setspritescale(blimp, 0.01 * (elem->pos.y / 50) +
+            0.02, 0.01 * (elem->pos.y / 50) + 0.02);
             sfRectangleShape_setPosition(win->rect_box, elem->pos);
             does_plane_draw(win, elem,blimp);
             elem = elem->next;

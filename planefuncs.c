@@ -59,6 +59,13 @@ void check_done(zone_t *zones, int i, plane_t *elem, win_t *win)
     }
 }
 
+plane_t *do_next(plane_t *elem)
+{
+    if (elem != NULL)
+        return (elem->next);
+    return (NULL);
+}
+
 void moveplanes(zone_t *zones, circle_t *c_first, win_t *win)
 {
     int i;
@@ -67,7 +74,7 @@ void moveplanes(zone_t *zones, circle_t *c_first, win_t *win)
         plane_t *elem = zones[i].first;
         while (elem != NULL) {
             elem = colideplanes(zones, i, c_first, elem);
-            elem = elem->next;
+            elem = do_next(elem);
         }
         elem = zones[i].first;
         check_done(zones, i, elem, win);

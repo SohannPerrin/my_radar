@@ -17,8 +17,9 @@ int setzone(circle_t *c_first, plane_t *p_first)
     anim_t blimp_anim[8];
     zone_t zones[2];
     subdivide_screen(0, zones, c_first);
-    while (p_first != NULL)
+    while (p_first != NULL){
         p_first = locate_plane(zones, p_first);
+    }
     win_t *win = setwin("radar", 1920, 1080, 32);
     win->bg = setsprite("sprites/map2.png", 1.00, 1.00, 0);
     sprite_t *blimp = setsprite("sprites/blimp.png", 0.10, 0.10, 0);
