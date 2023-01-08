@@ -14,11 +14,18 @@
 
 int setzone(circle_t *c_first, plane_t *p_first)
 {
-    zone_t zones[4 * 4];
-    subdivide_screen(3, zones, c_first);
+    anim_t blimp_anim[8];
+    zone_t zones[2];
+    subdivide_screen(0, zones, c_first);
     while (p_first != NULL)
         p_first = locate_plane(zones, p_first);
-    return (0);
+    win_t *win = setwin("radar", 1920, 1080, 32);
+    win->bg = setsprite("sprites/map2.png", 1.00, 1.00, 0);
+    sprite_t *blimp = setsprite("sprites/blimp.png", 0.10, 0.10, 0);
+    setspriteorigin(blimp, 763.00, 378.00);
+    make_anim(win, blimp_anim, blimp,
+    "1526 756 8 0 0 1527 0 0 756 1527 756 0 1512 1527 1512 0 2268 1527 2268");
+    return (initloop(zones, c_first, win, blimp));
 }
 
 int setinfo(FILE *fd, char *filepath)
@@ -36,9 +43,9 @@ int setinfo(FILE *fd, char *filepath)
     }
     while ((seen = getline(&buff, &len, fd)) != -1){
         if (buff[0] == 'A'){
-            errval = setplane(buff, p_first);
+            errval = setplane(buff, &p_first);
         } else
-            errval = settower(buff, c_first);
+            errval = settower(buff, &c_first);
         if (errval != 0)
             return (errval);
     }
@@ -54,14 +61,15 @@ int main(int ac, char **av)
     if (av[1][0] == '-' && av[1][1] == 'h'){
         write(1, "/***************************\\\n|Air trafic simulation panel\
 |\n\\***************************/\n\nUSAGE\n  ./my_radar [OPTIONS] path_to_scr\
-ipt\n   path_to_script    The path to the script file.\n\nOPTIONS\n  -h       \
-     print the usage and quit.\n\nUSER INTERACTIONS\n  'L' key        enable/d\
-isable hitboxes and areas.\n  'S' key        enable/disable sprites.", 348);
+ipt\n   path_to_script    The path to the script file.\n\nOPTIONS\n  \
+-h            print the usage and quit.\n\nUSER INTERACTIONS\n  'L' ke\
+y        enable/disable hitboxes and areas.\n  'S' key        enable/disable s\
+prites.", 348);
         return (0);
     }
     FILE *fd = fopen(av[1], "r");
     int errval = setinfo(fd, av[1]);
     if (fd != NULL)
         fclose(fd);
-    return(errval);
+    return (errval);
 }

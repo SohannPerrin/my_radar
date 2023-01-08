@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "circlestruct.h": "c",
-        "windowsfuncs.h": "c"
+        "windowsfuncs.h": "c",
+        "struct.h": "c"
     }
 }

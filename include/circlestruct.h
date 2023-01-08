@@ -13,7 +13,6 @@
     typedef struct circle{
         sfVector2f pos;
         float radius;
-        int sector;
         struct circle* next;
         struct circle* prev;
     }circle_t;
@@ -22,8 +21,8 @@
         sfFloatRect hitbox;
         sfVector2f pos;
         sfVector2f dest;
+        sfVector2f speed;
         int delay;
-        int speed;
         int sector;
         unsigned char is_tower;
         struct plane* next;

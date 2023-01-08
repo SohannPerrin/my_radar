@@ -18,18 +18,28 @@ int vect_in_rect(sfVector2f vect, sfFloatRect rect)
     return (0);
 }
 
-int circle_intersects(sfCircleShape *circ1, sfCircleShape *circ2)
+int square_intersects(sfVector2f sqr1, sfVector2f sqr2)
 {
-    float c1radius = sfCircleShape_getRadius(circ1);
-    float c2radius = sfCircleShape_getRadius(circ2);
-    sfVector2f c1center;
-    c1center.x = sfCircleShape_getPosition(circ1).x + c1radius;
-    c1center.y = sfCircleShape_getPosition(circ1).y + c1radius;
-    sfVector2f c2center;
-    c2center.x = sfCircleShape_getPosition(circ2).x + c2radius;
-    c2center.y = sfCircleShape_getPosition(circ2).y + c2radius;
-    if (pow((c1center.x - c2center.x), 2.00) + pow((c1center.y - c2center.y),
-    2.00) <= pow((c1radius + c2radius), 2.00))
+    if ((sqr1.x - sqr2.x <= 40 && sqr1.x - sqr2.x >= -40) &&
+    (sqr1.y - sqr2.y <= 40 && sqr1.y - sqr2.y >= -40))
         return (1);
     return (0);
+}
+
+int round_square(sfVector2f sqr, circle_t *circ)
+{
+    double dist = sqrt(pow((sqr.x - circ->pos.x), 2.00) +
+    pow((sqr.y - circ->pos.y), 2.00));
+    sfVector2f line =
+    (sfVector2f) {sqr.x - circ->pos.x, sqr.y - circ->pos.y};
+    sfVector2f unit_vect = (sfVector2f) {line.x / dist, line.y / dist};
+    if (circ->radius < dist){
+        unit_vect.x *= circ->radius;
+        unit_vect.y *= circ->radius;
+    } else
+        return (1);
+    sfVector2f point =
+    (sfVector2f) {circ->pos.x + unit_vect.x, circ->pos.y + unit_vect.y};
+    sfFloatRect square = (sfFloatRect) {sqr.x - 10, sqr.y - 10, 20, 20};
+    return (vect_in_rect(point, square));
 }

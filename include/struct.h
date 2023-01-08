@@ -31,19 +31,26 @@
     typedef struct win {
         sfRenderWindow *window;
         sfVideoMode vmode;
+        sfText *text;
         sfMusic *music;
         sfEvent event;
         sfClock *clock;
         sfVector2f mpos;
         int frame_passed;
+        int time_passed;
         int game_over;
         int click;
         int action;
         int errval;
         int isinit;
-        double score;
+        int vis_hitbox;
+        int vis_sprite;
+        sfCircleShape *circ_box;
+        sfRectangleShape *rect_box;
         sfFloatRect mbox;
-        sfImage *ico;
+        sfSoundBuffer *sbuff;
+        sfSound *sound;
+        sprite_t *bg;
     }win_t;
 
 #endif /* STRUCT_H_ */
